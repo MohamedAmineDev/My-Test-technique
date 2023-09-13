@@ -35,7 +35,14 @@ class ContactRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
+    public function findById($id):?Contact
+    {
+        return $this->createQueryBuilder('c1')
+        ->andWhere('c1.id=:val')
+        ->setParameter('val',$id)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 //    public function findOneBySomeField($value): ?Contact
 //    {
 //        return $this->createQueryBuilder('c')

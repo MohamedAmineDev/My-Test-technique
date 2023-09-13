@@ -49,6 +49,10 @@ class Contact
     {
         return $this->id;
     }
+    public function setId(string $id)
+    {
+        $this->id=$id;
+    }
 
     public function getAccountName(): ?string
     {
