@@ -9,12 +9,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/store', name: 'app_store')]
     public function index(LoadDataService $loadDataService): Response
     {
-        dd($loadDataService->getContacts(),$loadDataService->getOrders());
+        $contacts=$loadDataService->getContacts();
+        $orders=$loadDataService->getOrders();
+        dd($contacts,$orders);
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
     }
+    #[Route('/', name: 'app_home')]
+    public function redirection(LoadDataService $loadDataService): Response
+    {
+        return $this->redirect("/store");
+    }
+    
 }
