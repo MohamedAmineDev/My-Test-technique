@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Contact;
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -35,7 +36,14 @@ class OrderRepository extends ServiceEntityRepository
 //            ->getResult()
 //        ;
 //    }
-
+    public function findById(string $id):?Order
+    {
+        return $this->createQueryBuilder("o1")
+        ->andWhere("o1.id=:val")
+        ->setParameter("val",$id)
+        ->getQuery()
+        ->getOneOrNullResult();
+    }
 //    public function findOneBySomeField($value): ?Order
 //    {
 //        return $this->createQueryBuilder('o')

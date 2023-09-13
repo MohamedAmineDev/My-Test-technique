@@ -43,6 +43,11 @@ class Order
         return $this->id;
     }
 
+    public function setId(string $id)
+    {
+        $this->id=$id;
+    }
+
     public function getAmount(): ?int
     {
         return $this->amount;
@@ -118,6 +123,11 @@ class Order
             }
         }
 
+        return $this;
+    }
+    public function cleanSalesOrderLine(): static
+    {
+        $this->salesOrderLines = new ArrayCollection();
         return $this;
     }
 }

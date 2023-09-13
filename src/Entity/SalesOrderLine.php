@@ -13,8 +13,8 @@ class SalesOrderLine
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::GUID)]
-    private ?string $id = null;
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\Column]
     private ?float $amount = null;
@@ -25,23 +25,21 @@ class SalesOrderLine
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $unitDescription = null;
-
+    //#[ORM\Id]
     #[ORM\ManyToOne(inversedBy: 'salesOrderLines')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Order $theOrder = null;
 
-    #[ORM\OneToMany(mappedBy: 'salesOrderLine', targetEntity: Article::class, orphanRemoval: true)]
-    private Collection $articles;
+    //#[ORM\Id]
+    #[ORM\ManyToOne(inversedBy: 'salesOrderLines')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Article $article = null;
 
     public function __construct()
     {
-        $this->articles = new ArrayCollection();
+       
     }
-
-
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -81,19 +79,6 @@ class SalesOrderLine
 
         return $this;
     }
-
-    public function getUnitDescription(): ?string
-    {
-        return $this->unitDescription;
-    }
-
-    public function setUnitDescription(string $unitDescription): static
-    {
-        $this->unitDescription = $unitDescription;
-
-        return $this;
-    }
-
     public function getTheOrder(): ?Order
     {
         return $this->theOrder;
@@ -106,33 +91,17 @@ class SalesOrderLine
         return $this;
     }
 
-    /**
-     * @return Collection<int, Article>
-     */
-    public function getArticles(): Collection
+    public function getArticle(): ?Article
     {
-        return $this->articles;
+        return $this->article;
     }
 
-    public function addArticle(Article $article): static
+    public function setArticle(?Article $article): static
     {
-        if (!$this->articles->contains($article)) {
-            $this->articles->add($article);
-            $article->setSalesOrderLine($this);
-        }
+        $this->article = $article;
 
         return $this;
     }
 
-    public function removeArticle(Article $article): static
-    {
-        if ($this->articles->removeElement($article)) {
-            // set the owning side to null (unless already changed)
-            if ($article->getSalesOrderLine() === $this) {
-                $article->setSalesOrderLine(null);
-            }
-        }
-
-        return $this;
-    }
+    
 }
