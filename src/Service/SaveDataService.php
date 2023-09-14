@@ -29,32 +29,28 @@ class SaveDataService
         $this->entityManager = $entityManager;
     }
     // This method will save the contacts that were loaded from the api
-    public function saveContacts($contacts): bool
+    public function saveContacts($result): bool
     {
         try {
-            $content = $contacts["results"];
+            $contacts = $result["results"];
             $i = 0;
             $saved = false;
-            while ($i < count($content)) {
-                $id = $content[$i]["ID"];
+            foreach ($contacts as $currentContact) {
+                $id = $currentContact["ID"];
                 $contact = $this->contactRepo->findById($id);
                 if ($contact == null) {
                     $newContact = new Contact();
                     $newContact->setId($id);
-                    $newContact->setAccountName($content[$i]["AccountName"]);
-                    $newContact->setAddressLine1($content[$i]["AddressLine1"]);
-                    $newContact->setAddressLine2($content[$i]["AddressLine2"]);
-                    $newContact->setCity($content[$i]["City"]);
-                    $newContact->setContactName($content[$i]["ContactName"]);
-                    $newContact->setCountry($content[$i]["Country"]);
-                    $newContact->setZipCode($content[$i]["ZipCode"]);
+                    $newContact->setAccountName($currentContact["AccountName"]);
+                    $newContact->setAddressLine1($currentContact["AddressLine1"]);
+                    $newContact->setAddressLine2($currentContact["AddressLine2"]);
+                    $newContact->setCity($currentContact["City"]);
+                    $newContact->setContactName($currentContact["ContactName"]);
+                    $newContact->setCountry($currentContact["Country"]);
+                    $newContact->setZipCode($currentContact["ZipCode"]);
                     $this->entityManager->persist($newContact);
-                    $saved = true;
+                    $this->entityManager->flush();
                 }
-                $i++;
-            }
-            if ($saved) {
-                $this->entityManager->flush();
             }
             return true;
         } catch (Exception $e) {
@@ -62,56 +58,53 @@ class SaveDataService
             return false;
         }
     }
-    public function saveOrders($orders): bool
+    public function saveOrders($result): bool
     {
         try {
-            $content = $orders["results"];
-            $i = 0;
-            while ($i < count($content)) {
-                $orderId = $content[$i]["OrderID"];
+            $orders = $result["results"];
+            foreach ($orders as $currentOrder) {
+                $orderId = $currentOrder["OrderID"];
                 $order = $this->orderRepo->findById($orderId);
                 if ($order == null) {
                     $order = new Order();
-                    $delivredTo = $this->contactRepo->findById($content[$i]["DeliverTo"]);
-                    $order->setAmount($content[$i]["Amount"]);
+                    $delivredTo = $this->contactRepo->findById($currentOrder["DeliverTo"]);
+                    $order->setAmount($currentOrder["Amount"]);
                     $order->setDeliverTo($delivredTo);
-                    $order->setCurrency($content[$i]["Currency"]);
-                    $order->setId($content[$i]["OrderID"]);
-                    $order->setOrderNumber($content[$i]["OrderNumber"]);
+                    $order->setCurrency($currentOrder["Currency"]);
+                    $order->setId($currentOrder["OrderID"]);
+                    $order->setOrderNumber($currentOrder["OrderNumber"]);
                     $this->entityManager->persist($order);
                     $this->entityManager->flush();
-                    $salesOrderLines = $content[$i]["SalesOrderLines"]["results"];
-                    $j = 0;
-                    while ($j < count($salesOrderLines)) {
+                    $salesOrderLines = $currentOrder["SalesOrderLines"]["results"];
+                    foreach ($salesOrderLines as $currentSalesOrderLine) {
                         $newSalesOrderLine = new SalesOrderLine();
-                        $articleId = $salesOrderLines[$j]["Item"];
+                        $articleId = $currentSalesOrderLine["Item"];
                         $article = $this->articelRepo->findById($articleId);
-                        //dd($article);
+                        $new = false;
                         if ($article == null) {
                             $article = new Article();
                             $article->setId($articleId);
-                            $article->setUnitCode($salesOrderLines[$j]["UnitCode"]);
-                            $article->setArticleDescription($salesOrderLines[$j]["ItemDescription"]);
-                            $article->setUnitDescription($salesOrderLines[$j]["UnitDescription"]);
-                            $article->setVatAmount($salesOrderLines[$j]["VATAmount"]);
-                            $article->setUnitPrice($salesOrderLines[$j]["UnitPrice"]);
-                            $article->setVatPercentage($salesOrderLines[$j]["VATPercentage"]);
+                            $article->setUnitCode($currentSalesOrderLine["UnitCode"]);
+                            $article->setArticleDescription($currentSalesOrderLine["ItemDescription"]);
+                            $article->setUnitDescription($currentSalesOrderLine["UnitDescription"]);
+                            $article->setVatAmount($currentSalesOrderLine["VATAmount"]);
+                            $article->setUnitPrice($currentSalesOrderLine["UnitPrice"]);
+                            $article->setVatPercentage($currentSalesOrderLine["VATPercentage"]);
                             $newSalesOrderLine->setArticle($article);
+                            $new = true;
                         }
-                        $newSalesOrderLine->setAmount($salesOrderLines[$j]["Amount"]);
-                        $newSalesOrderLine->setDiscount($salesOrderLines[$j]["Discount"]);
-                        $newSalesOrderLine->setQuantity($salesOrderLines[$j]["Quantity"]);
+                        $newSalesOrderLine->setAmount($currentSalesOrderLine["Amount"]);
+                        $newSalesOrderLine->setDiscount($currentSalesOrderLine["Discount"]);
+                        $newSalesOrderLine->setQuantity($currentSalesOrderLine["Quantity"]);
                         $newSalesOrderLine->setTheOrder($order);
                         $newSalesOrderLine->setArticle($article);
                         $article->addSalesOrderLine($newSalesOrderLine);
-                        $this->entityManager->persist($article);
-                        //$this->entityManager->persist($newSalesOrderLine);
+                        if ($new) {
+                            $this->entityManager->persist($article);
+                        }
                         $this->entityManager->flush();
-                        //dd($newSalesOrderLine);
-                        $j++;
                     }
                 }
-                $i++;
             }
             return true;
         } catch (Exception $e) {
