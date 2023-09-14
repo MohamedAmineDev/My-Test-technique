@@ -22,6 +22,7 @@
       <th scope="col">Delivred To</th>
       <th scope="col">Order Number</th>
       <th scope="col">Address</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +34,11 @@
       <td>{{order.deliverTo.accountName}}</td>
       <td>{{order.orderNumber}}</td>
       <td>{{order.deliverTo.addressLine1}}</td>
+      <td>
+      <a type="button" class="btn btn-info text-white" href="{{path('app_order_details',{orderId : order.id})}}">
+      Check out
+</a>
+      </td>
     </tr>
     {% endfor %}
     
@@ -40,11 +46,14 @@
 </table>
 {% include '_partials/_pagination.html.twig' %}
 </div>
-
+<button  class="btn btn-success text-white mt-3" data-bs-toggle="modal" data-bs-target="#saveToCsvModal">
+      Save to csv
+</button>
 </div>
 </div>
 <div class="col-1" >
 </div>
 </div>
+{% include '_partials/_save_to_csv.html.twig' %}
 {% endblock %}
 
