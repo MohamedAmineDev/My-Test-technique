@@ -39,8 +39,10 @@ class CsvFileManipulationService{
 
     public function fetchOrders(string $fileName){
         //$fileName="orders.csv";
-        header("Content-type:   text/csv");
-        header("Content-Disposition:    attachment; filename=$fileName");
+        ob_start();
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename='.$fileName);
+        ob_end_clean();
         $output=fopen("php://output","w");
         $head=explode(";","order;delivery_name;delivery_country;delivery_zipcode;delivery_city;item_index;item_id;item_quantity;line_price_exl_vat;line_price_incl_val");
         $row=explode(";"," ; ; ; ; ; ; ; ; ; ");
