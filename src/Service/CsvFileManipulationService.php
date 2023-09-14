@@ -1,4 +1,12 @@
 <?php
+ /**
+* Ce fichier fait partie du projet mon-test-technique
+*
+* Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+*
+* @package Service
+* @copyright 2023 Quantic Factory
+*/
 namespace App\Service;
 
 use App\Repository\ArticleRepository;
@@ -6,19 +14,35 @@ use App\Repository\ContactRepository;
 use App\Repository\OrderRepository;
 use App\Repository\SalesOrderLineRepository;
 
-class CsvFileManipulation{
+/**
+ * La classe  permet de sauvegarder les données récupérer depuis la base de données dans un fichier csv
+ *
+ * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
+ */
+
+class CsvFileManipulationService{
+
     private OrderRepository $orderRepo;
+
     public function __construct(OrderRepository $orderRepo)
     {
         $this->orderRepo=$orderRepo;
     }
-    public function fetchOrders(){
-        $fileName="orders.csv";
+
+     /**
+     * Sauvegarde les commandes récupéré de la base de données dans un fichier csv
+     *
+     * @param string $fileName le nom du fichier csv qui va être crée
+     *
+     *
+     */
+
+    public function fetchOrders(string $fileName){
+        //$fileName="orders.csv";
         header("Content-type:   text/csv");
         header("Content-Disposition:    attachment; filename=$fileName");
         $output=fopen("php://output","w");
         $head=explode(";","order;delivery_name;delivery_country;delivery_zipcode;delivery_city;item_index;item_id;item_quantity;line_price_exl_vat;line_price_incl_val");
-       //dd($head);
         $row=explode(";"," ; ; ; ; ; ; ; ; ; ");
         $orders=$this->orderRepo->findAll();
         fputcsv($output,$head);

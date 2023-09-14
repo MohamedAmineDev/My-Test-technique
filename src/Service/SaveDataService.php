@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Service
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Service;
 
 use App\Entity\Article;
@@ -13,28 +22,40 @@ use App\Repository\SalesOrderLineRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
+/**
+ * La classe SaveDataService permet de sauvegarder les données récupérer dans une base de données
+ *
+ * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
+ */
+
 class SaveDataService
 {
-    private $articelRepo;
-    private $contactRepo;
-    private $orderRepo;
-    private $salesOrderLineRepo;
-    private $entityManager;
-    public function __construct(ArticleRepository $articelRepo, ContactRepository $contactRepo, OrderRepository $orderRepo, SalesOrderLineRepository $salesOrderLineRepo, EntityManagerInterface $entityManager)
+    private ArticleRepository $articelRepo;
+    private ContactRepository $contactRepo;
+    private OrderRepository $orderRepo;
+    private EntityManagerInterface $entityManager;
+    
+    public function __construct(ArticleRepository $articelRepo, ContactRepository $contactRepo, OrderRepository $orderRepo,  EntityManagerInterface $entityManager)
     {
         $this->articelRepo = $articelRepo;
         $this->contactRepo = $contactRepo;
         $this->orderRepo = $orderRepo;
-        $this->salesOrderLineRepo = $salesOrderLineRepo;
         $this->entityManager = $entityManager;
     }
-    // This method will save the contacts that were loaded from the api
-    public function saveContacts($result): bool
+
+    /**
+     * Sauvegarde les contacts fournis dans le paramètre
+     *
+     * @param array $result la liste des contacts
+     *
+     *
+     * @return bool Un réponse qui indique le statut de l'opération
+     */
+
+    public function saveContacts(array $result): bool
     {
         try {
             $contacts = $result["results"];
-            $i = 0;
-            $saved = false;
             foreach ($contacts as $currentContact) {
                 $id = $currentContact["ID"];
                 $contact = $this->contactRepo->findById($id);
@@ -58,6 +79,16 @@ class SaveDataService
             return false;
         }
     }
+
+    /**
+     * Sauvegarde les commandes fournis dans le paramètre
+     *
+     * @param array $result la liste des commandes
+     *
+     *
+     * @return bool Un réponse qui indique le statut de l'opération
+     */
+
     public function saveOrders($result): bool
     {
         try {

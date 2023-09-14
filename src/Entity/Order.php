@@ -23,7 +23,7 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $currency = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\ManyToOne(inversedBy: 'orders',fetch:'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Contact $deliverTo = null;
 
