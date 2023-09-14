@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Contact;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -42,6 +43,27 @@ class ContactRepository extends ServiceEntityRepository
         ->setParameter('val',$id)
         ->getQuery()
         ->getOneOrNullResult();
+    }
+    public function paginationQuery(int $page, int $limit = 5): array
+    {
+        $page=abs($page);
+        $result = [];
+        $query = $this->createQueryBuilder("c2")
+            ->orderBy("c2.id", "ASC")
+            ->setMaxResults($limit)
+            ->setFirstResult(($page * $limit) - $limit)
+            ->getQuery();
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+        if (empty($data)) {
+            return $result;
+        }
+        $pages = ceil($paginator->count() / $limit);
+        $result["data"] = $data;
+        $result["pages"] = $pages;
+        $result["page"] = $page;
+        $result["limit"] = $limit;
+        return $result;
     }
 //    public function findOneBySomeField($value): ?Contact
 //    {

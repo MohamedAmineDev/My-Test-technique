@@ -13,9 +13,6 @@ namespace App\Controller;
 use App\Repository\ContactRepository;
 use App\Repository\OrderRepository;
 use App\Repository\SalesOrderLineRepository;
-use App\Service\CsvFileManipulationService;
-use App\Service\LoadDataService;
-use App\Service\SaveDataService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -82,7 +79,7 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         return $this->render('home/index.html.twig', [
-            
+            'path'=>'app_home'
         ]);
     }
 

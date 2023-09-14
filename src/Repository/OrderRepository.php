@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Contact;
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -22,35 +23,58 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-//    /**
-//     * @return Order[] Returns an array of Order objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('o.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-    public function findById(string $id):?Order
+    //    /**
+    //     * @return Order[] Returns an array of Order objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('o.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+    
+    public function findById(string $id): ?Order
     {
         return $this->createQueryBuilder("o1")
-        ->andWhere("o1.id=:val")
-        ->setParameter("val",$id)
-        ->getQuery()
-        ->getOneOrNullResult();
+            ->andWhere("o1.id=:val")
+            ->setParameter("val", $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
-//    public function findOneBySomeField($value): ?Order
-//    {
-//        return $this->createQueryBuilder('o')
-//            ->andWhere('o.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
+    public function paginationQuery(int $page, int $limit = 5): array
+    {
+        $page=abs($page);
+        $result = [];
+        $query = $this->createQueryBuilder("o2")
+            ->orderBy("o2.id", "ASC")
+            ->setMaxResults($limit)
+            ->setFirstResult(($page * $limit) - $limit)
+            ->getQuery();
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+        if (empty($data)) {
+            return $result;
+        }
+        $pages = ceil($paginator->count() / $limit);
+        $result["data"] = $data;
+        $result["pages"] = $pages;
+        $result["page"] = $page;
+        $result["limit"] = $limit;
+        return $result;
+    }
+    //    public function findOneBySomeField($value): ?Order
+    //    {
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
