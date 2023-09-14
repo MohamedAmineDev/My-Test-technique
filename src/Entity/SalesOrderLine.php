@@ -31,7 +31,7 @@ class SalesOrderLine
     private ?Order $theOrder = null;
 
     //#[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'salesOrderLines')]
+    #[ORM\ManyToOne(inversedBy: 'salesOrderLines',fetch:'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Article $article = null;
 

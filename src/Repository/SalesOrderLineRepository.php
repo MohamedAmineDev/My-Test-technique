@@ -21,28 +21,35 @@ class SalesOrderLineRepository extends ServiceEntityRepository
         parent::__construct($registry, SalesOrderLine::class);
     }
 
-//    /**
-//     * @return SalesOrderLine[] Returns an array of SalesOrderLine objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?SalesOrderLine
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    /**
+    //     * @return SalesOrderLine[] Returns an array of SalesOrderLine objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('s.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+    public function findByTheOrder(string $orderId): array
+    {
+        return $this->createQueryBuilder("s1")
+            ->andWhere("s1.theOrder.id= :val")
+            ->setParameter("val", $orderId)
+            ->getQuery()
+            ->getResult();
+    }
+    //    public function findOneBySomeField($value): ?SalesOrderLine
+    //    {
+    //        return $this->createQueryBuilder('s')
+    //            ->andWhere('s.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

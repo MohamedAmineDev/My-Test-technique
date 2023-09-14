@@ -30,7 +30,7 @@ class Order
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?string $orderNumber = null;
 
-    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: SalesOrderLine::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: SalesOrderLine::class, orphanRemoval: true,fetch:'EAGER')]
     private Collection $salesOrderLines;
 
     public function __construct()

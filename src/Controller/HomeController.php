@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ContactRepository;
 use App\Repository\OrderRepository;
 use App\Repository\SalesOrderLineRepository;
+use App\Service\CsvFileManipulation;
 use App\Service\LoadDataService;
 use App\Service\SaveDataService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,6 +26,8 @@ class HomeController extends AbstractController
     #[Route('/store', name: 'app_store')]
     public function index(LoadDataService $loadDataService,SaveDataService $saveDataService): Response
     {
+        $head=explode(";","order;delivery_name;delivery_country;delivery_zipcode;delivery_city;item_index;item_id;item_quantity;line_price_exl_vat;line_price_incl_val");
+        //dd($head);
         $contacts=$loadDataService->getContacts();
         $orders=$loadDataService->getOrders();
         dd($contacts,$orders);
@@ -42,6 +45,13 @@ class HomeController extends AbstractController
         dd($this->orderRepo->findAll(),$this->salesOrderLineRepository->findAll());
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
+        ]);
+    }
+    #[Route('/fetch_data', name: 'app_fetch_data')]
+    public function fetchData(CsvFileManipulation $csv): Response
+    {
+        $csv->fetchOrders("myorders.csv");
+        return $this->render('empty/empty.html.twig', [
         ]);
     }
     #[Route('/', name: 'app_home')]
