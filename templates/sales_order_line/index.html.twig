@@ -3,56 +3,55 @@
 {% block title %}Order details{% endblock %}
 
 {% block body %}
-<div class="row mt-3" >
-<div class="col-1" >
-</div>
-<div class="col-10" >
-<div class="card border-secondary">
-  <div class="card-header text-center">
-    Order details
+<div class="row mt-3">
+  <div class="col-1">
   </div>
-  <div class="card-body">
-<div class="row">
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Article description</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Discount</th>
-      <th scope="col">Unit Price</th>
-      <th scope="col">Amount</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for sale in sales %}
-        <tr>
-      <th scope="row">{{loop.index}}</th>
-      <td>{{sale.article.articleDescription}}</td>
-      <td>{{sale.quantity}}</td>
-      <td>{{sale.discount}}</td>
-      <td>{{sale.article.unitPrice}}</td>
-      <td>{{sale.amount}}</td>
-    </tr>
-    {% endfor %}
-    <tr>
-    <td></td>
-    <td>Total Amount</td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>{{totalAmount}}</td>
-    </tr>
-  </tbody>
-</table>
-<a  class="btn btn-primary text-white mt-3" href="{{path('app_orders',{page : page})}}" >
-      Go back
-</a>
-</div>
-</div>
-</div>
-<div class="col-1" >
-</div>
-</div>
-{% endblock %}
-
+  <div class="col-10">
+    <div class="card border-secondary">
+      <div class="card-header text-center">
+        Order details
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Article description</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Discount</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for sale in sales %}
+              <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{sale.article.articleDescription}}</td>
+                <td>{{sale.quantity}}</td>
+                <td>{{sale.discount}}</td>
+                <td>{{sale.article.unitPrice}}</td>
+                <td>{{sale.amount}}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <td></td>
+                <td>Total Amount</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{totalAmount}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <a class="btn btn-primary text-white mt-3" href="{{path('app_orders',{page : page})}}">
+            Go back
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-1">
+    </div>
+  </div>
+  {% endblock %}
