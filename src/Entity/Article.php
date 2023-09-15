@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Entity
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Entity;
 
 use App\Repository\ArticleRepository;
@@ -8,11 +17,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Cette classe  représente le modèle Article
+ *
+ * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
+ */
+
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
 {
     #[ORM\Id]
-   // #[ORM\GeneratedValue]
+    // #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::GUID)]
     private ?string $id = null;
 
@@ -34,7 +49,7 @@ class Article
     #[ORM\Column]
     private ?float $vatPercentage = null;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: SalesOrderLine::class, orphanRemoval: true,cascade:["persist"])]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: SalesOrderLine::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $salesOrderLines;
 
     public function __construct()
@@ -46,9 +61,11 @@ class Article
     {
         return $this->id;
     }
-    public function setId(string $id)
+    public function setId(string $id): static
     {
-         $this->id=$id;
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getArticleDescription(): ?string
@@ -151,5 +168,4 @@ class Article
 
         return $this;
     }
-
 }

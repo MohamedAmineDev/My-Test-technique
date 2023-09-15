@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Entity
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
@@ -7,6 +16,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Cette classe  représente le modèle Order
+ *
+ * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
+ */
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -18,19 +33,19 @@ class Order
     private ?string $id = null;
 
     #[ORM\Column]
-    private ?int $amount = null;
+    private ?float $amount = null;
 
     #[ORM\Column(length: 255)]
     private ?string $currency = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders',fetch:'EAGER')]
+    #[ORM\ManyToOne(inversedBy: 'orders', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Contact $deliverTo = null;
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?string $orderNumber = null;
 
-    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: SalesOrderLine::class, orphanRemoval: true,fetch:'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: SalesOrderLine::class, orphanRemoval: true, fetch: 'EAGER')]
     private Collection $salesOrderLines;
 
     public function __construct()
@@ -43,17 +58,19 @@ class Order
         return $this->id;
     }
 
-    public function setId(string $id)
+    public function setId(string $id): static
     {
-        $this->id=$id;
+        $this->id = $id;
+
+        return $this;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): static
+    public function setAmount(float $amount): static
     {
         $this->amount = $amount;
 

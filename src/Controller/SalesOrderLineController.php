@@ -43,12 +43,21 @@ class SalesOrderLineController extends AbstractController
     #[Route('/order/{orderId}/items', name: 'app_order_details')]
     public function index(string $orderId, OrderRepository $orderRepo, Request $request): Response
     {
+        //Récupération du order depuis la base de données
         $order = $orderRepo->findById($orderId);
+        $salesOrderLines = [];
+        $amount = 0;
+        //Récupération du numéro de la page actuelle de la page précédente
         $page = $request->query->getInt("page", 1);
+        //Si un order est récupéré alors on affiche le détail de la commande
+        if (!is_null($order)) {
+            $salesOrderLines = $order->getSalesOrderLines();
+            $amount = $order->getAmount();
+        }
         return $this->render('sales_order_line/index.html.twig', [
             'path' => 'app_order_details',
-            'sales' => $order->getSalesOrderLines(),
-            'totalAmount' => $order->getAmount(),
+            'sales' => $salesOrderLines,
+            'totalAmount' => $amount,
             'page' => $page
         ]);
     }

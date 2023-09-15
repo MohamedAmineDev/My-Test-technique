@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Entity
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
@@ -7,6 +16,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Cette classe  représente le modèle Contact
+ *
+ * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
+ */
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -49,9 +64,11 @@ class Contact
     {
         return $this->id;
     }
-    public function setId(string $id)
+    public function setId(string $id): static
     {
-        $this->id=$id;
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getAccountName(): ?string

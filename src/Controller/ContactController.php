@@ -41,15 +41,20 @@ class ContactController extends AbstractController
     #[Route('/contacts', name: 'app_contacts')]
     public function index(Request $request, ContactRepository $contactRepo): Response
     {
+        //Récupération du numéro de la page actuelle
         $page = $request->query->getInt("page", 1);
-        $response = $contactRepo->paginationQuery($page, 4);
-        $contacts = $response["data"];
-        $currentPage = $response["page"];
-        $pages = $response["pages"];
-        $limit = $response["limit"];
+        $contacts = [];
+        $pages = 1;
+        $limit = 4;
+        //Récupération de la liste des contacts paginé
+        $response = $contactRepo->paginationQuery($page, $limit);
+        if (!empty($response)) {
+            $contacts = $response["data"];
+            $pages = $response["pages"];
+        }
         return $this->render('contact/index.html.twig', [
             'contacts' => $contacts,
-            'currentPage' => $currentPage,
+            'currentPage' => $page,
             'pages' => $pages,
             'limit' => $limit,
             'path' => 'app_contacts'

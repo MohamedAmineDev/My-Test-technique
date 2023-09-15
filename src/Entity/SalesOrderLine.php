@@ -1,12 +1,24 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Entity
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Entity;
 
 use App\Repository\SalesOrderLineRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Cette classe  représente le modèle SalesOrderLine
+ *
+ * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
+ */
 
 #[ORM\Entity(repositoryClass: SalesOrderLineRepository::class)]
 class SalesOrderLine
@@ -31,17 +43,23 @@ class SalesOrderLine
     private ?Order $theOrder = null;
 
     //#[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'salesOrderLines',fetch:'EAGER')]
+    #[ORM\ManyToOne(inversedBy: 'salesOrderLines', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Article $article = null;
 
     public function __construct()
     {
-       
     }
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): ?static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getAmount(): ?float
@@ -102,6 +120,4 @@ class SalesOrderLine
 
         return $this;
     }
-
-    
 }

@@ -45,6 +45,7 @@ class OrderController extends AbstractController
     #[Route('/orders', name: 'app_orders')]
     public function index(Request $request, OrderRepository $orderRepo): Response
     {
+        //Création d'un formulaire pour la saisie d'un api
         $myForm = $this->createForm(
             ConsumeApiType::class,
             options: [
@@ -53,15 +54,20 @@ class OrderController extends AbstractController
                 'attr' => ['target' => '_blank']
             ]
         );
+        //Récupération du numéro de la page actuelle
         $page = $request->query->getInt("page", 1);
-        $response = $orderRepo->paginationQuery($page, 4);
-        $orders = $response["data"];
-        $currentPage = $response["page"];
-        $pages = $response["pages"];
-        $limit = $response["limit"];
+        $orders = [];
+        $pages = 1;
+        $limit = 4;
+        //Récupération de la liste des commandes paginé
+        $response = $orderRepo->paginationQuery($page, $limit);
+        if (!empty($response)) {
+            $orders = $response["data"];
+            $pages = $response["pages"];
+        }
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
-            'currentPage' => $currentPage,
+            'currentPage' => $page,
             'pages' => $pages,
             'limit' => $limit,
             'path' => 'app_orders',
@@ -88,6 +94,7 @@ class OrderController extends AbstractController
     #[Route('/flow/orders_to_csv', name: 'app_flow', methods: ["GET"])]
     public function ordersToCsv(Request $request, LoadDataService $loadDataService, SaveDataService $saveDataService, CsvFileManipulationService $csvFileManipulationService): Response
     {
+        //Création d'un formulaire pour la saisie d'un api
         $myForm = $this->createForm(
             ConsumeApiType::class,
             options: [
@@ -96,20 +103,27 @@ class OrderController extends AbstractController
                 'attr' => ['target' => '_blank']
             ]
         );
+        //Récupération les valeurs des champs dans les inputs du formulaire
         $myForm->handleRequest($request);
+        //On teste si le formulaire est valide et a été soumis
         if ($myForm->isSubmitted() && $myForm->isValid()) {
             $data = $myForm->getData();
+            //On récupère l'url  et la clé de l'api du formulaire soumis
             $url = $data["apiUrl"];
             $key = $data["apiKey"];
+            //On consomme l'api
             $response = $loadDataService->loadDataFromAnApi($url, $key);
             $result = false;
+            //Si la ressource demandée est contact alors on sauvegarde les nouveaux contacts
             if (str_contains($url, "contact")) {
                 $result = $saveDataService->saveContacts($response);
             } else {
+                //Si la ressource demandée est order alors on sauvegarde les nouvelles commandes
                 if (str_contains($url, "order")) {
                     $result = $saveDataService->saveOrders($response);
                 }
             }
+            //Si la sauvegarde est un succès alors on génére un fichier csv
             if ($result) {
                 $csvFileManipulationService->fetchOrders("orders.csv");
             }

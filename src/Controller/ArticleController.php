@@ -40,15 +40,20 @@ class ArticleController extends AbstractController
     #[Route('/articles', name: 'app_articles')]
     public function index(Request $request, ArticleRepository $articleRepo): Response
     {
+        //Récupération du numéro de la page actuelle
         $page = $request->query->getInt("page", 1);
-        $response = $articleRepo->paginationQuery($page, 4);
-        $articles = $response["data"];
-        $currentPage = $response["page"];
-        $pages = $response["pages"];
-        $limit = $response["limit"];
+        $articles = [];
+        $pages = 1;
+        $limit = 4;
+        //Récupération de la liste des articles paginé
+        $response = $articleRepo->paginationQuery($page, $limit);
+        if (!empty($response)) {
+            $articles = $response["data"];
+            $pages = $response["pages"];
+        }
         return $this->render('article/index.html.twig', [
             'articles' => $articles,
-            'currentPage' => $currentPage,
+            'currentPage' => $page,
             'pages' => $pages,
             'limit' => $limit,
             'path' => 'app_articles'
