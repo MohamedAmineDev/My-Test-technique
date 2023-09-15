@@ -146,7 +146,7 @@ class SaveDataService
                         if ($new) {
                             $this->entityManager->persist($article);
                         }
-                        $this->entityManager->flush();
+                        $this->entityManager->flush();            
                     }
                 }
             }
