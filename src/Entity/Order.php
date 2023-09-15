@@ -18,7 +18,7 @@ class Order
     private ?string $id = null;
 
     #[ORM\Column]
-    private ?int $amount = null;
+    private ?float $amount = null;
 
     #[ORM\Column(length: 255)]
     private ?string $currency = null;
@@ -46,14 +46,16 @@ class Order
     public function setId(string $id)
     {
         $this->id=$id;
+
+        return $this;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): ?float
     {
         return $this->amount;
     }
 
-    public function setAmount(int $amount): static
+    public function setAmount(float $amount): static
     {
         $this->amount = $amount;
 

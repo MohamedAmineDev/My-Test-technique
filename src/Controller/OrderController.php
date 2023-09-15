@@ -54,14 +54,17 @@ class OrderController extends AbstractController
             ]
         );
         $page = $request->query->getInt("page", 1);
-        $response = $orderRepo->paginationQuery($page, 4);
-        $orders = $response["data"];
-        $currentPage = $response["page"];
-        $pages = $response["pages"];
-        $limit = $response["limit"];
+        $orders = [];
+        $pages = 1;
+        $limit = 4;
+        $response = $orderRepo->paginationQuery($page, $limit);
+        if (!empty($response)) {
+            $orders = $response["data"];
+            $pages = $response["pages"];
+        }
         return $this->render('order/index.html.twig', [
             'orders' => $orders,
-            'currentPage' => $currentPage,
+            'currentPage' => $page,
             'pages' => $pages,
             'limit' => $limit,
             'path' => 'app_orders',

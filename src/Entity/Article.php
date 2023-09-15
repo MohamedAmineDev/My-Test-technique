@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Article
 {
     #[ORM\Id]
-   // #[ORM\GeneratedValue]
+    // #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::GUID)]
     private ?string $id = null;
 
@@ -34,7 +34,7 @@ class Article
     #[ORM\Column]
     private ?float $vatPercentage = null;
 
-    #[ORM\OneToMany(mappedBy: 'article', targetEntity: SalesOrderLine::class, orphanRemoval: true,cascade:["persist"])]
+    #[ORM\OneToMany(mappedBy: 'article', targetEntity: SalesOrderLine::class, orphanRemoval: true, cascade: ["persist"])]
     private Collection $salesOrderLines;
 
     public function __construct()
@@ -46,9 +46,11 @@ class Article
     {
         return $this->id;
     }
-    public function setId(string $id)
+    public function setId(string $id): static
     {
-         $this->id=$id;
+        $this->id = $id;
+        
+        return $this;
     }
 
     public function getArticleDescription(): ?string
@@ -151,5 +153,4 @@ class Article
 
         return $this;
     }
-
 }

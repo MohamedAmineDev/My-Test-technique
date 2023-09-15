@@ -44,11 +44,17 @@ class SalesOrderLineController extends AbstractController
     public function index(string $orderId, OrderRepository $orderRepo, Request $request): Response
     {
         $order = $orderRepo->findById($orderId);
+        $salesOrderLines = [];
+        $amount = 0;
         $page = $request->query->getInt("page", 1);
+        if (!is_null($order)) {
+            $salesOrderLines = $order->getSalesOrderLines();
+            $amount = $order->getAmount();
+        }
         return $this->render('sales_order_line/index.html.twig', [
             'path' => 'app_order_details',
-            'sales' => $order->getSalesOrderLines(),
-            'totalAmount' => $order->getAmount(),
+            'sales' => $salesOrderLines,
+            'totalAmount' => $amount,
             'page' => $page
         ]);
     }

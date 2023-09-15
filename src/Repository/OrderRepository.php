@@ -72,7 +72,7 @@ class OrderRepository extends ServiceEntityRepository
      *
      * @param int $page
      * 
-     * @param int $limit par défaut a 5 comme valeur
+     * @param int $limit
      *
      *  @return array
      *

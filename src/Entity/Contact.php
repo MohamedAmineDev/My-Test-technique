@@ -51,7 +51,9 @@ class Contact
     }
     public function setId(string $id)
     {
-        $this->id=$id;
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getAccountName(): ?string
