@@ -49,7 +49,7 @@ class Contact
     {
         return $this->id;
     }
-    public function setId(string $id)
+    public function setId(string $id): static
     {
         $this->id = $id;
 

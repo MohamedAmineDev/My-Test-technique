@@ -31,17 +31,23 @@ class SalesOrderLine
     private ?Order $theOrder = null;
 
     //#[ORM\Id]
-    #[ORM\ManyToOne(inversedBy: 'salesOrderLines',fetch:'EAGER')]
+    #[ORM\ManyToOne(inversedBy: 'salesOrderLines', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Article $article = null;
 
     public function __construct()
     {
-       
     }
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): ?static
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getAmount(): ?float
@@ -102,6 +108,4 @@ class SalesOrderLine
 
         return $this;
     }
-
-    
 }

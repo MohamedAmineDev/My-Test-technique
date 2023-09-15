@@ -7,8 +7,6 @@ use App\Entity\Order;
 use App\Entity\SalesOrderLine;
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\isNull;
-
 class OrderUnitTest extends TestCase
 {
     public function testIsTrue(): void

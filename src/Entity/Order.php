@@ -23,14 +23,14 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $currency = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders',fetch:'EAGER')]
+    #[ORM\ManyToOne(inversedBy: 'orders', fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Contact $deliverTo = null;
 
     #[ORM\Column(type: Types::BIGINT, nullable: true)]
     private ?string $orderNumber = null;
 
-    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: SalesOrderLine::class, orphanRemoval: true,fetch:'EAGER')]
+    #[ORM\OneToMany(mappedBy: 'theOrder', targetEntity: SalesOrderLine::class, orphanRemoval: true, fetch: 'EAGER')]
     private Collection $salesOrderLines;
 
     public function __construct()
@@ -43,9 +43,9 @@ class Order
         return $this->id;
     }
 
-    public function setId(string $id)
+    public function setId(string $id): static
     {
-        $this->id=$id;
+        $this->id = $id;
 
         return $this;
     }
