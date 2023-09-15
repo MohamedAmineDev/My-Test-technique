@@ -40,15 +40,22 @@ class CsvFileManipulationService
 
     public function fetchOrders(string $fileName)
     {
+         //On créer un buffer
         ob_start();
+        //On déclare qu'on va générer un fichier csv
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename=' . $fileName);
+        //On nettoie le buffer afin de l'avoir vide
         ob_end_clean();
+        //On ouvre le fichier on ecriture
         $output = fopen("php://output", "w");
         $head = explode(";", "order;delivery_name;delivery_country;delivery_zipcode;delivery_city;item_index;item_id;item_quantity;line_price_exl_vat;line_price_incl_val");
         $row = explode(";", " ; ; ; ; ; ; ; ; ; ");
+        //On récupère la liste des commandes
         $orders = $this->orderRepo->findAll();
+        //On ecrit la 1er ligne du fichier
         fputcsv($output, $head);
+        //On parcout la liste des
         foreach ($orders as $order) {
             $row[0] = $order->getId();
             $contact = $order->getDeliverTo();

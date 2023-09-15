@@ -1,10 +1,25 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Tests\Unit
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Tests;
 
 use App\Entity\Contact;
 use App\Entity\Order;
 use PHPUnit\Framework\TestCase;
+
+/**
+ * Cette classe  représente  les tests unitaires qui doivent être effectués sur  l'entité Contact
+ *
+ * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
+ */
 
 class ContactUnitTest extends TestCase
 {

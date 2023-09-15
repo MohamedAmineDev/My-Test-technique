@@ -40,10 +40,12 @@ class ArticleController extends AbstractController
     #[Route('/articles', name: 'app_articles')]
     public function index(Request $request, ArticleRepository $articleRepo): Response
     {
+        //Récupération du numéro de la page actuelle
         $page = $request->query->getInt("page", 1);
         $articles = [];
         $pages = 1;
         $limit = 4;
+        //Récupération de la liste des articles paginé
         $response = $articleRepo->paginationQuery($page, $limit);
         if (!empty($response)) {
             $articles = $response["data"];

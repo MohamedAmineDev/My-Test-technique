@@ -55,20 +55,24 @@ class SaveDataService
     public function saveContacts(array $result): bool
     {
         try {
+            //Récupération du contenu de la réponse de l'api
             $contacts = $result["results"];
+            //On parcourt la liste de contact
             foreach ($contacts as $currentContact) {
                 $id = $currentContact["ID"];
+                //On cherche si on a déjà ce contact dans la base de données
                 $contact = $this->contactRepo->findById($id);
+                //Dans le cas où on n'a pas ce contact on l'ajoute
                 if ($contact == null) {
                     $newContact = new Contact();
-                    $newContact->setId($id);
-                    $newContact->setAccountName($currentContact["AccountName"]);
-                    $newContact->setAddressLine1($currentContact["AddressLine1"]);
-                    $newContact->setAddressLine2($currentContact["AddressLine2"]);
-                    $newContact->setCity($currentContact["City"]);
-                    $newContact->setContactName($currentContact["ContactName"]);
-                    $newContact->setCountry($currentContact["Country"]);
-                    $newContact->setZipCode($currentContact["ZipCode"]);
+                    $newContact->setId($id)
+                        ->setAccountName($currentContact["AccountName"])
+                        ->setAddressLine1($currentContact["AddressLine1"])
+                        ->setAddressLine2($currentContact["AddressLine2"])
+                        ->setCity($currentContact["City"])
+                        ->setContactName($currentContact["ContactName"])
+                        ->setCountry($currentContact["Country"])
+                        ->setZipCode($currentContact["ZipCode"]);
                     $this->entityManager->persist($newContact);
                     $this->entityManager->flush();
                 }
@@ -92,43 +96,52 @@ class SaveDataService
     public function saveOrders($result): bool
     {
         try {
+            //Récupération du contenu de la réponse de l'api
             $orders = $result["results"];
+            //On parcourt la liste de commande
             foreach ($orders as $currentOrder) {
                 $orderId = $currentOrder["OrderID"];
+                //On cherche si on a déjà cette commande dans la base de données
                 $order = $this->orderRepo->findById($orderId);
+                //Dans le cas où on n'a pas cette commande on l'ajoute
                 if ($order == null) {
                     $order = new Order();
+                    //On récupère le contact par son id
                     $delivredTo = $this->contactRepo->findById($currentOrder["DeliverTo"]);
-                    $order->setAmount($currentOrder["Amount"]);
-                    $order->setDeliverTo($delivredTo);
-                    $order->setCurrency($currentOrder["Currency"]);
-                    $order->setId($currentOrder["OrderID"]);
-                    $order->setOrderNumber($currentOrder["OrderNumber"]);
+                    $order->setAmount($currentOrder["Amount"])
+                        ->setDeliverTo($delivredTo)
+                        ->setCurrency($currentOrder["Currency"])
+                        ->setId($currentOrder["OrderID"])
+                        ->setOrderNumber($currentOrder["OrderNumber"]);
                     $this->entityManager->persist($order);
                     $this->entityManager->flush();
+                    //On récupère les lignes de commande
                     $salesOrderLines = $currentOrder["SalesOrderLines"]["results"];
                     foreach ($salesOrderLines as $currentSalesOrderLine) {
                         $newSalesOrderLine = new SalesOrderLine();
                         $articleId = $currentSalesOrderLine["Item"];
+                        //On cherche si on a déjà cet article dans la base de données
                         $article = $this->articelRepo->findById($articleId);
                         $new = false;
+                        //Dans le cas où on n'a pas cette commande on l'ajoute
                         if ($article == null) {
                             $article = new Article();
-                            $article->setId($articleId);
-                            $article->setUnitCode($currentSalesOrderLine["UnitCode"]);
-                            $article->setArticleDescription($currentSalesOrderLine["ItemDescription"]);
-                            $article->setUnitDescription($currentSalesOrderLine["UnitDescription"]);
-                            $article->setVatAmount($currentSalesOrderLine["VATAmount"]);
-                            $article->setUnitPrice($currentSalesOrderLine["UnitPrice"]);
-                            $article->setVatPercentage($currentSalesOrderLine["VATPercentage"]);
+                            $article->setId($articleId)
+                                ->setUnitCode($currentSalesOrderLine["UnitCode"])
+                                ->setArticleDescription($currentSalesOrderLine["ItemDescription"])
+                                ->setUnitDescription($currentSalesOrderLine["UnitDescription"])
+                                ->setVatAmount($currentSalesOrderLine["VATAmount"])
+                                ->setUnitPrice($currentSalesOrderLine["UnitPrice"])
+                                ->setVatPercentage($currentSalesOrderLine["VATPercentage"]);
                             $newSalesOrderLine->setArticle($article);
                             $new = true;
                         }
-                        $newSalesOrderLine->setAmount($currentSalesOrderLine["Amount"]);
-                        $newSalesOrderLine->setDiscount($currentSalesOrderLine["Discount"]);
-                        $newSalesOrderLine->setQuantity($currentSalesOrderLine["Quantity"]);
-                        $newSalesOrderLine->setTheOrder($order);
-                        $newSalesOrderLine->setArticle($article);
+                        $newSalesOrderLine->setAmount($currentSalesOrderLine["Amount"])
+                            ->setDiscount($currentSalesOrderLine["Discount"])
+                            ->setQuantity($currentSalesOrderLine["Quantity"])
+                            ->setTheOrder($order)
+                            ->setArticle($article);
+                        //On ajoute la ligne de commande a l'article
                         $article->addSalesOrderLine($newSalesOrderLine);
                         if ($new) {
                             $this->entityManager->persist($article);

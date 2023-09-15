@@ -41,10 +41,12 @@ class ContactController extends AbstractController
     #[Route('/contacts', name: 'app_contacts')]
     public function index(Request $request, ContactRepository $contactRepo): Response
     {
+        //Récupération du numéro de la page actuelle
         $page = $request->query->getInt("page", 1);
         $contacts = [];
         $pages = 1;
         $limit = 4;
+        //Récupération de la liste des contacts paginé
         $response = $contactRepo->paginationQuery($page, $limit);
         if (!empty($response)) {
             $contacts = $response["data"];
