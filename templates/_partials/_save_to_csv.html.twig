@@ -7,17 +7,17 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-      {{ form_start(myForm) }}
-      <div class="mb-3 row">
-      {{ form_row(myForm.apiUrl,{attr:{class: "form-control"}}) }}
-    </div>
-    <div class="mb-3 row">
-      {{ form_row(myForm.apiKey,{attr:{class: "form-control"}}) }}
-    </div>
-    <div class="mb-3 row">
-      {{ form_row(myForm.submit,{attr:{class: "btn btn-success"}}) }}
-    </div>
-      {{ form_end(myForm) }}
+        {{ form_start(myForm) }}
+        <div class="mb-3 row">
+          {{ form_row(myForm.apiUrl,{attr:{class: "form-control"}}) }}
+        </div>
+        <div class="mb-3 row">
+          {{ form_row(myForm.apiKey,{attr:{class: "form-control"}}) }}
+        </div>
+        <div class="mb-3 row">
+          {{ form_row(myForm.submit,{attr:{class: "btn btn-success"}}) }}
+        </div>
+        {{ form_end(myForm) }}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
