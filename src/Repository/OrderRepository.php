@@ -1,8 +1,16 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Repository
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Repository;
 
-use App\Entity\Contact;
 use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -37,7 +45,19 @@ class OrderRepository extends ServiceEntityRepository
     //            ->getResult()
     //        ;
     //    }
-    
+
+    /**
+     * Elle retourne un order qui a l'id spécifié
+     *
+     * @param string $id
+     * 
+     * 
+     * @return ?Order
+     *
+     *
+     */
+
+
     public function findById(string $id): ?Order
     {
         return $this->createQueryBuilder("o1")
@@ -47,9 +67,21 @@ class OrderRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * Elle retourne un array qui contient la page actuelle, nombre de pages et orders paginés
+     *
+     * @param int $page
+     * 
+     * @param int $limit par défaut a 5 comme valeur
+     *
+     *  @return array
+     *
+     *
+     */
+
     public function paginationQuery(int $page, int $limit = 5): array
     {
-        $page=abs($page);
+        $page = abs($page);
         $result = [];
         $query = $this->createQueryBuilder("o2")
             ->orderBy("o2.id", "ASC")

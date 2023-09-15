@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Repository
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Repository;
 
 use App\Entity\SalesOrderLine;
@@ -35,14 +44,7 @@ class SalesOrderLineRepository extends ServiceEntityRepository
     //            ->getResult()
     //        ;
     //    }
-    public function findByTheOrder(string $orderId): array
-    {
-        return $this->createQueryBuilder("s1")
-            ->andWhere("s1.theOrder.id= :val")
-            ->setParameter("val", $orderId)
-            ->getQuery()
-            ->getResult();
-    }
+
     //    public function findOneBySomeField($value): ?SalesOrderLine
     //    {
     //        return $this->createQueryBuilder('s')

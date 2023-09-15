@@ -23,7 +23,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 /**
- * La classe SaveDataService permet de sauvegarder les données récupérer dans une base de données
+ * Cette classe  permet de sauvegarder les données récupérées dans une base de données
  *
  * @author Mohamed Amine Ben Safta <mohamedaminebensafta[@]gmail.com>
  */
@@ -34,7 +34,7 @@ class SaveDataService
     private ContactRepository $contactRepo;
     private OrderRepository $orderRepo;
     private EntityManagerInterface $entityManager;
-    
+
     public function __construct(ArticleRepository $articelRepo, ContactRepository $contactRepo, OrderRepository $orderRepo,  EntityManagerInterface $entityManager)
     {
         $this->articelRepo = $articelRepo;
@@ -46,10 +46,10 @@ class SaveDataService
     /**
      * Sauvegarde les contacts fournis dans le paramètre
      *
-     * @param array $result la liste des contacts
+     * @param array $result
      *
      *
-     * @return bool Un réponse qui indique le statut de l'opération
+     * @return bool
      */
 
     public function saveContacts(array $result): bool
@@ -83,10 +83,10 @@ class SaveDataService
     /**
      * Sauvegarde les commandes fournis dans le paramètre
      *
-     * @param array $result la liste des commandes
+     * @param array $result
      *
      *
-     * @return bool Un réponse qui indique le statut de l'opération
+     * @return bool
      */
 
     public function saveOrders($result): bool

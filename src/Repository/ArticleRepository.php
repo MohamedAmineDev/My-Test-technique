@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Ce fichier fait partie du projet mon-test-technique
+ *
+ * Dans le cas où le fichier est complexe ou important, ne pas hésiter à donner des détails ici…
+ *
+ * @package Repository
+ * @copyright 2023 Quantic Factory
+ */
+
 namespace App\Repository;
 
 use App\Entity\Article;
@@ -22,32 +31,55 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
-//    /**
-//     * @return Article[] Returns an array of Article objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-    public function findById(string $id):?Article
+    //    /**
+    //     * @return Article[] Returns an array of Article objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    /**
+     * Elle retourne un article qui a l'id spécifié
+     *
+     * @param string $id
+     * 
+     * 
+     * @return ?Article
+     *
+     *
+     */
+
+    public function findById(string $id): ?Article
     {
         return $this->createQueryBuilder("a1")
-        ->andWhere("a1.id=:val")
-        ->setParameter("val",$id)
-        ->getQuery()
-        ->getOneOrNullResult();
+            ->andWhere("a1.id=:val")
+            ->setParameter("val", $id)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
+    /**
+     * Elle retourne un array qui contient la page actuelle, nombre de pages et articles paginés
+     *
+     * @param int $page
+     * 
+     * @param int $limit par défaut a 5 comme valeur
+     *
+     *  @return array
+     *
+     *
+     */
     public function paginationQuery(int $page, int $limit = 5): array
     {
-        $page=abs($page);
+        $page = abs($page);
         $result = [];
         $query = $this->createQueryBuilder("a2")
             ->orderBy("a2.id", "ASC")
@@ -66,13 +98,13 @@ class ArticleRepository extends ServiceEntityRepository
         $result["limit"] = $limit;
         return $result;
     }
-//    public function findOneBySomeField($value): ?Article
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Article
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
